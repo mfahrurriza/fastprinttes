@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Produk
 from .forms import ProdukForm
+from django.db.models import Max
 
 def daftar_produk(request):
     produk_list = Produk.objects.filter(status__nama_status='bisa dijual')
@@ -11,7 +12,23 @@ def tambah_produk(request):
     if request.method == 'POST':
         form = ProdukForm(request.POST)
         if form.is_valid():
-            form.save()
+            # Jangan save dulu ke DB, kita mau selipkan ID
+            produk_baru = form.save(commit=False)
+            
+            # Cari ID paling besar yang ada di database saat ini
+            max_id = Produk.objects.aggregate(Max('id_produk'))['id_produk__max']
+            
+            # Jika database kosong, mulai dari 1. Jika ada, tambah 1.
+            if max_id is None:
+                next_id = 1
+            else:
+                next_id = max_id + 1
+            
+            # Assign ID baru ke produk
+            produk_baru.id_produk = next_id
+            
+            # Baru simpan beneran
+            produk_baru.save()
             return redirect('daftar_produk')
     else:
         form = ProdukForm()
