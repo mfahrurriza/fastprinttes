@@ -1,0 +1,19 @@
+# 1. Python Cache 
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 2. Virtual Environment 
+# Folder tempat library installan, ukurannya ratusan MB
+env/
+venv/
+.env
+
+# 3. Database Lokal
+# Karena Anda pakai MySQL, db.sqlite3 ini biasanya kosong/tidak terpakai, tapi tetap jangan diupload
+db.sqlite3
+
+# 4. IDE / Editor settings 
+.vscode/
+.idea/
+.DS_Store
