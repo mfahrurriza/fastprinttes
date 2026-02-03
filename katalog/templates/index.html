@@ -1,49 +1,73 @@
-<!doctype html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Tes Programmer FastPrint</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  </head>
-  <body class="container mt-4">
+{% extends 'base.html' %} {% block content %}
+<div class="row">
+  <div class="col-12">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>Daftar Produk (Bisa Dijual)</h2>
-      <a href="{% url 'tambah_produk' %}" class="btn btn-primary">+ Tambah Produk</a>
+      <div>
+        <h2 class="fw-bold text-primary">Daftar Produk</h2>
+        <p class="text-muted">Kelola data produk yang siap dijual</p>
+      </div>
+      <a href="{% url 'tambah_produk' %}" class="btn btn-primary btn-lg shadow-sm"> <i class="bi bi-plus-circle me-1"></i> Tambah Produk </a>
     </div>
 
-    <table class="table table-bordered table-striped hover">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Nama Produk</th>
-          <th>Kategori</th>
-          <th>Harga</th>
-          <th>Status</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for p in produk_list %}
-        <tr>
-          <td>{{ p.id_produk }}</td>
-          <td>{{ p.nama_produk }}</td>
-          <td>{{ p.kategori.nama_kategori }}</td>
-          <td>Rp {{ p.harga }}</td>
-          <td>
-            <span class="badge bg-success">{{ p.status.nama_status }}</span>
-          </td>
-          <td>
-            <a href="{% url 'edit_produk' p.id_produk %}" class="btn btn-sm btn-warning">Edit</a>
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+              <tr>
+                <th class="ps-4" style="width: 1%; white-space: nowrap">ID</th>
 
-            <a href="{% url 'hapus_produk' p.id_produk %}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');"> Hapus </a>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="6" class="text-center">Data kosong.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </body>
-</html>
+                <th>Nama Produk</th>
+
+                <th style="width: 1%; white-space: nowrap">Kategori</th>
+
+                <th class="text-end" style="width: 1%; white-space: nowrap">Harga</th>
+
+                <th class="text-center" style="width: 1%; white-space: nowrap">Status</th>
+
+                <th class="text-center" style="width: 1%; white-space: nowrap">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in produk_list %}
+              <tr>
+                <td class="ps-4 text-muted">{{ p.id_produk }}</td>
+
+                <td class="fw-bold text-dark">{{ p.nama_produk }}</td>
+
+                <td class="text-nowrap">
+                  <span class="badge bg-light text-dark border">{{ p.kategori.nama_kategori }}</span>
+                </td>
+
+                <td class="text-primary fw-bold text-nowrap">Rp {{ p.harga }}</td>
+
+                <td class="text-center text-nowrap">
+                  <span class="badge rounded-pill bg-success bg-opacity-75"> <i class="bi bi-check-circle me-1"></i> {{ p.status.nama_status }} </span>
+                </td>
+
+                <td class="text-center text-nowrap">
+                  <div class="btn-group" role="group">
+                    <a href="{% url 'edit_produk' p.id_produk %}" class="btn btn-sm btn-outline-warning" title="Edit">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a href="{% url 'hapus_produk' p.id_produk %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin menghapus {{ p.nama_produk }}?');" title="Hapus">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <p class="text-muted">Belum ada data produk.</p>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
